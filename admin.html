@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RHB Ads – অ্যাডমিন</title>
+<style>
+:root{--bg:#f6f8f3;--fg:#1d2a1f;--muted:#5b6b5e;--card:#fff;--border:#dbe3d6;--accent:#2f6b3a;--danger:#b42318;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#111a13;--fg:#e8f0e6;--muted:#a3b4a6;--card:#1a251c;--border:#2c3b2f;--accent:#6fbf7b;--danger:#f97066;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Noto Sans Bengali",sans-serif;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.3rem;margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
+label{display:block;font-size:.85rem;color:var(--muted);margin:8px 0 3px}
+input[type=text],input[type=url],textarea{width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;background:transparent;color:inherit;font:inherit}
+button{padding:9px 14px;border:0;border-radius:8px;background:var(--accent);color:#fff;font:inherit;cursor:pointer}
+button.alt{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+button.del{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ad{display:flex;gap:10px;align-items:center}
+.ad img,.ad .ph{width:56px;height:56px;border-radius:8px;object-fit:cover;flex:none;background:var(--border);display:flex;align-items:center;justify-content:center}
+.ad .info{flex:1;min-width:0}
+.ad .info b,.ad .info small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{font-size:.72rem;padding:2px 8px;border-radius:99px;border:1px solid var(--border)}
+.on{color:var(--accent);border-color:var(--accent)}
+#msg{color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="app">
+    <div class="top"><h1>RHB Ads অ্যাডমিন</h1></div>
+    <div class="card" style="border-color:var(--danger);color:var(--danger);font-size:.88rem">⚠️ এই প্যানেলে লগইন নেই, তাই শুধু শেখা ও পরীক্ষার জন্য। আসল ক্লায়েন্টের সাইটে চালানোর আগে লগইন ফিরিয়ে আনতে হবে।</div>
+
+    <div class="card">
+      <b id="formTitle">নতুন বিজ্ঞাপন</b>
+      <input type="hidden" id="editId">
+      <label>শিরোনাম</label><input type="text" id="fTitle" maxlength="60">
+      <label>ছোট বর্ণনা</label><input type="text" id="fDesc" maxlength="90">
+      <label>ক্লিক করলে যাবে (লিংক)</label><input type="url" id="fLink" placeholder="https://www.facebook.com/...">
+      <label>ছবির লিংক (Cloudinary বা অন্য, ফাঁকা রাখা যাবে)</label><input type="url" id="fImg" placeholder="https://...">
+      <label><input type="checkbox" id="fActive" checked> চালু</label>
+      <div class="row"><button id="btnSave">সেভ করুন</button><button class="alt" id="btnReset">বাতিল</button></div>
+    </div>
+
+    <div id="list"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+var firebaseConfig={apiKey:"AIzaSyCvyOUQnhbI-k0WyLJOKvr-DlaV4rvl5jo",authDomain:"codemyst-web-templates.firebaseapp.com",projectId:"codemyst-web-templates",storageBucket:"codemyst-web-templates.firebasestorage.app",messagingSenderId:"881032790773",appId:"1:881032790773:web:740824c56564624211fbbc"};
+var COL = "rhb_ads";
+
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+var $ = function(id){ return document.getElementById(id); };
+var cache = {};
+
+function resetForm(){
+  $("editId").value=""; $("fTitle").value=""; $("fDesc").value=""; $("fLink").value=""; $("fImg").value="";
+  $("fActive").checked=true; $("formTitle").textContent="নতুন বিজ্ঞাপন";
+}
+$("btnReset").onclick = resetForm;
+
+$("btnSave").onclick = function(){
+  var data = { title:$("fTitle").value.trim(), desc:$("fDesc").value.trim(), link:$("fLink").value.trim(),
+               imageUrl:$("fImg").value.trim(), active:$("fActive").checked };
+  if (!data.title || !/^https?:\/\//i.test(data.link)) { alert("শিরোনাম ও সঠিক লিংক (https://...) দিন"); return; }
+  var id = $("editId").value;
+  var p = id ? db.collection(COL).doc(id).update(data)
+             : db.collection(COL).add(Object.assign({createdAt: firebase.firestore.FieldValue.serverTimestamp()}, data));
+  p.then(function(){ resetForm(); load(); }).catch(function(e){ alert("সেভ হয়নি: " + e.message); });
+};
+
+function load(){
+  db.collection(COL).orderBy("createdAt","desc").get().then(function(snap){
+    var list = $("list"); list.innerHTML = ""; cache = {};
+    if (snap.empty) { list.innerHTML = '<div class="card" style="color:var(--muted)">এখনও কোনো বিজ্ঞাপন নেই।</div>'; return; }
+    snap.forEach(function(d){
+      var a = d.data(); cache[d.id] = a;
+      var c = document.createElement("div"); c.className = "card";
+      var row = document.createElement("div"); row.className = "ad";
+      var im;
+      if (a.imageUrl) { im = document.createElement("img"); im.src = a.imageUrl; im.alt = ""; }
+      else { im = document.createElement("div"); im.className = "ph"; im.textContent = "📣"; }
+      var info = document.createElement("div"); info.className = "info";
+      var b = document.createElement("b"); b.textContent = a.title;
+      var s = document.createElement("small"); s.textContent = a.desc || a.link;
+      var badge = document.createElement("span"); badge.className = "badge" + (a.active ? " on" : ""); badge.textContent = a.active ? "চালু" : "বন্ধ";
+      info.appendChild(b); info.appendChild(s);
+      row.appendChild(im); row.appendChild(info); row.appendChild(badge);
+      var act = document.createElement("div"); act.className = "row";
+      function btn(t, cls, fn){ var x = document.createElement("button"); x.textContent = t; if (cls) x.className = cls; x.onclick = fn; act.appendChild(x); }
+      btn("সম্পাদনা","alt",function(){
+        $("editId").value=d.id; $("fTitle").value=a.title; $("fDesc").value=a.desc||""; $("fLink").value=a.link;
+        $("fImg").value=a.imageUrl||""; $("fActive").checked=!!a.active; $("formTitle").textContent="বিজ্ঞাপন সম্পাদনা";
+        window.scrollTo({top:0,behavior:"smooth"});
+      });
+      btn(a.active ? "বন্ধ করুন" : "চালু করুন","alt",function(){
+        db.collection(COL).doc(d.id).update({active:!a.active}).then(load);
+      });
+      btn("মুছুন","del",function(){
+        if (confirm("মুছে ফেলবেন?")) db.collection(COL).doc(d.id).delete().then(load);
+      });
+      c.appendChild(row); c.appendChild(act); list.appendChild(c);
+    });
+  }).catch(function(e){ $("list").textContent = "লোড হয়নি: " + e.message; });
+}
+load();
+</script>
+</body>
+</html>
