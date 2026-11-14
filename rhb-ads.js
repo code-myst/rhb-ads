@@ -1,6 +1,8 @@
 /* RHB Ads – ক্লায়েন্টের সাইটে শুধু এই লাইন বসাবেন (যেকোনো জায়গায়, </body>-এর আগে ভালো):
    <script async src="https://YOUR-HOST/rhb-ads.js" data-partner="PARTNER-ID"></script>
-   data-partner = ওই সাইটের মালিকের আইডি (পরে ভিউ/আয়ের হিসাবে কাজে লাগবে) 
+   data-partner = ওই সাইটের মালিকের আইডি (পরে ভিউ/আয়ের হিসাবে কাজে লাগবে)
+   data-slots   = কোথায় দেখাবে: banner, card, popup (কমা দিয়ে একাধিক)। না দিলে শুধু banner।
+     উদাহরণ: data-slots="banner,popup"   |   card-এর জন্য পেজে <div id="rhb-card"></div> লাগবে 
    ঐচ্ছিক: <div id="rhb-banner"></div> বা <div id="rhb-card"></div> দিলে সেখানেই দেখাবে। */
 (function () {
   if (window.__rhbAds) return;
@@ -9,6 +11,9 @@
   // async স্ক্রিপ্টে currentScript শুরুতেই ধরে রাখতে হয়
   var me = document.currentScript;
   var PARTNER = (me && me.getAttribute("data-partner")) || "";
+  var SLOTS = ((me && me.getAttribute("data-slots")) || "banner")
+    .toLowerCase().split(",").map(function (x) { return x.trim(); });
+  function want(n) { return SLOTS.indexOf(n) !== -1; }
 
   function ready(fn) {
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
@@ -69,21 +74,27 @@
     var start = Math.floor(Math.random() * ads.length);
     function pick(i) { return ads[(start + i) % ads.length]; }
 
-    var banner = document.getElementById("rhb-banner");
-    if (!banner) {
-      banner = el("div"); banner.id = "rhb-top";
-      document.body.insertBefore(banner, document.body.firstChild);
+    if (want("banner")) {
+      var banner = document.getElementById("rhb-banner");
+      if (!banner) {
+        banner = el("div"); banner.id = "rhb-top";
+        document.body.insertBefore(banner, document.body.firstChild);
+      }
+      banner.appendChild(build(pick(0)));
     }
-    banner.appendChild(build(pick(0)));
 
-    var card = document.getElementById("rhb-card");
-    if (card) card.appendChild(build(pick(1), "rhb-card"));
+    if (want("card")) {
+      var card = document.getElementById("rhb-card");
+      if (card) card.appendChild(build(pick(1), "rhb-card"));
+    }
 
-    var pop = el("div"); pop.id = "rhb-pop";
-    var x = el("button", "rhb-x", "×"); x.setAttribute("aria-label", "বন্ধ করুন");
-    x.onclick = function () { pop.remove(); };
-    pop.appendChild(x); pop.appendChild(build(pick(2)));
-    document.body.appendChild(pop);
+    if (want("popup")) {
+      var pop = el("div"); pop.id = "rhb-pop";
+      var x = el("button", "rhb-x", "×"); x.setAttribute("aria-label", "বন্ধ করুন");
+      x.onclick = function () { pop.remove(); };
+      pop.appendChild(x); pop.appendChild(build(pick(2)));
+      document.body.appendChild(pop);
+    }
   }
 
   fetch(URL)
