@@ -1,12 +1,12 @@
 # RHB Ads Integration Guide
 
-<!-- শুধু ব্যানার (কিছু না দিলেও এটাই হবে) -->
+**শুধু ব্যানার (কিছু না দিলেও এটাই হবে)**
 <script async src="https://code-myst.github.io/rhb-ads/rhb-ads.js" data-partner="sulaiman"></script>
 
-<!-- ব্যানার + পপ-আপ -->
+**ব্যানার + পপ-আপ**
 <script async src="https://code-myst.github.io/rhb-ads/rhb-ads.js" data-partner="sulaiman" data-slots="banner,popup"></script>
 
-<!-- তিনটাই -->
+**তিনটাই**
 <script async src="https://code-myst.github.io/rhb-ads/rhb-ads.js" data-partner="sulaiman" data-slots="banner,card,popup"></script>
 
 ## কয়েকটা জরুরি কথা
