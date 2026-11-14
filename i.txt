@@ -1,3 +1,12 @@
+<!-- শুধু ব্যানার (কিছু না দিলেও এটাই হবে) -->
+<script async src="https://code-myst.github.io/rhb-ads/rhb-ads.js" data-partner="sulaiman"></script>
+
+<!-- ব্যানার + পপ-আপ -->
+<script async src="https://code-myst.github.io/rhb-ads/rhb-ads.js" data-partner="sulaiman" data-slots="banner,popup"></script>
+
+<!-- তিনটাই -->
+<script async src="https://code-myst.github.io/rhb-ads/rhb-ads.js" data-partner="sulaiman" data-slots="banner,card,popup"></script>
+
 কয়েকটা জরুরি কথা
 
 কার্ড চাইলে: পেজে যেখানে কার্ড দেখাতে চান, সেখানে আলাদা করে <div id="rhb-card"></div> লিখতে হবে, আর data-slots-এ card রাখতে হবে।
