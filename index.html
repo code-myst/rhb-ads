@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RHB Ads – সাশ্রয়ী দামে বিজ্ঞাপন</title>
+<meta name="description" content="ছোট ব্যবসার জন্য সাশ্রয়ী বিজ্ঞাপন। প্যাকেজ বেছে নিন, চেকআউট করুন, বিজ্ঞাপন চালু।">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{--bg:#0d0817;--card:rgba(255,255,255,.055);--bd:rgba(255,255,255,.11);--fg:#f4f0ff;--mut:#b6aad6;--p1:#7c3aed;--p2:#c026d3;--gold:#f5c26b;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--fg);font-family:"Noto Sans Bengali",system-ui,sans-serif;line-height:1.65;background:radial-gradient(900px 500px at 15% -5%,rgba(124,58,237,.35),transparent 60%),radial-gradient(700px 500px at 95% 10%,rgba(192,38,211,.22),transparent 60%),var(--bg);min-height:100vh;overflow-x:hidden}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(13,8,23,.65);border-bottom:1px solid var(--bd)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:11px;padding-bottom:11px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.1rem}
+.logo i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--p1),var(--p2))}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;text-decoration:none;font:600 1rem "Noto Sans Bengali",sans-serif;color:#fff;padding:11px 20px;border-radius:14px;background:linear-gradient(135deg,var(--p1),var(--p2));box-shadow:0 8px 24px rgba(124,58,237,.4)}
+.btn.sm{padding:8px 16px;font-size:.92rem;border-radius:12px}
+.btn.ghost{background:var(--card);border:1px solid var(--bd);box-shadow:none}
+.hero{text-align:center;padding:56px 0 30px;position:relative}
+.orb{position:absolute;border-radius:50%;filter:blur(50px);opacity:.5;z-index:-1}
+.o1{width:200px;height:200px;background:var(--p1);left:2%;top:10px}.o2{width:170px;height:170px;background:var(--p2);right:3%;top:90px}
+.hero h1{font-size:clamp(1.8rem,6vw,2.9rem);line-height:1.25;margin:0 0 12px}
+.hero h1 b{background:linear-gradient(90deg,#c4b5fd,#f0abfc,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);max-width:520px;margin:0 auto 20px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:var(--card);border:1px solid var(--bd);font-size:.85rem;color:var(--mut)}
+.chip .ic{width:16px;height:16px;color:#c4b5fd}
+h2.sec{font-size:1.5rem;text-align:center;margin:46px 0 6px}
+.sub{text-align:center;color:var(--mut);margin:0 0 18px}
+/* carousel */
+.car{position:relative;overflow:hidden;border-radius:20px;margin:14px 0}
+.track{display:flex;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.slide{display:block;min-width:100%;aspect-ratio:16/6;min-height:150px;background-size:cover;background-position:center;text-decoration:none}
+
+
+.dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer}.dots i.on{background:#fff;width:20px;border-radius:6px}
+/* tabs + cards */
+.tabs{position:relative;display:flex;width:max-content;max-width:100%;margin:0 auto 18px;padding:4px;border-radius:99px;background:var(--card);border:1px solid var(--bd);overflow-x:auto}
+.tab{position:relative;z-index:1;border:0;background:none;color:var(--mut);font:600 .92rem "Noto Sans Bengali",sans-serif;padding:8px 18px;border-radius:99px;cursor:pointer;white-space:nowrap}
+.tab.on{color:#fff}
+.ind{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:99px;background:linear-gradient(135deg,var(--p1),var(--p2));box-shadow:0 4px 16px rgba(124,58,237,.5)}
+.slider{position:relative;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 4px 18px;scrollbar-width:none}
+.slider::-webkit-scrollbar{display:none}
+.pc{position:relative;flex:0 0 min(310px,84%);scroll-snap-align:center;padding:22px 18px 18px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid var(--bd);backdrop-filter:blur(10px)}
+.pc.hot{border-color:rgba(192,132,252,.7);box-shadow:0 0 0 1px rgba(192,132,252,.35),0 18px 40px rgba(124,58,237,.3)}
+.bdg{position:absolute;top:-11px;left:18px;background:linear-gradient(90deg,var(--gold),#f59e0b);color:#2a1700;font-size:.74rem;font-weight:700;padding:2px 12px;border-radius:99px}
+.pc h3{margin:0;font-size:1.15rem}.pd{margin:2px 0 8px;color:var(--mut);font-size:.9rem}
+.old{display:flex;align-items:center;gap:8px;min-height:26px}
+.old s{color:var(--mut)}
+.off{display:inline-flex;align-items:center;gap:4px;font-size:.76rem;font-weight:700;color:#2a1700;background:var(--gold);padding:1px 9px;border-radius:99px}
+.off .ic{width:12px;height:12px}
+.now{font-size:2.3rem;font-weight:700;line-height:1.2}.now small{font-size:.88rem;color:var(--mut);font-weight:400}
+.pc ul{list-style:none;padding:0;margin:12px 0 16px}
+.pc li{display:flex;gap:8px;align-items:flex-start;padding:3px 0;font-size:.94rem}
+.pc li .ic{width:17px;height:17px;color:#c4b5fd;margin-top:4px}
+.pc .btn{width:100%}
+.hint{display:flex;gap:6px;align-items:center;justify-content:center;color:var(--mut);font-size:.84rem}
+.empty{text-align:center;color:var(--mut);padding:30px;border:1px dashed var(--bd);border-radius:18px}
+/* steps */
+.flow{display:grid;grid-template-columns:1fr;gap:38px;margin-top:22px}
+@media(min-width:760px){.flow{grid-template-columns:repeat(3,1fr);gap:32px}}
+.stp{position:relative;padding:26px 18px 20px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid var(--bd);text-align:center;backdrop-filter:blur(10px)}
+.stp h3{margin:6px 0 4px;font-size:1.15rem}
+.stp p{margin:0;color:var(--mut);font-size:.93rem}
+.stp .art{width:100%;max-width:210px;height:auto;display:block;margin:0 auto 6px;overflow:visible}
+.num{position:absolute;top:-16px;left:50%;margin-left:-16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:linear-gradient(135deg,var(--p1),var(--p2))}
+.stp::after{content:"";position:absolute;width:2px;height:38px;left:50%;top:100%;margin-left:-1px;background:linear-gradient(180deg,#c084fc 0 6px,transparent 6px) 0 0/2px 12px repeat-y;animation:mv 1s linear infinite;opacity:.75}
+.stp:last-child::after{display:none}
+@media(min-width:760px){.stp::after{width:32px;height:2px;left:100%;top:50%;margin:0;background:linear-gradient(90deg,#c084fc 0 6px,transparent 6px) 0 0/12px 2px repeat-x;animation:mh 1s linear infinite}}
+@keyframes mv{to{background-position:0 12px}}
+@keyframes mh{to{background-position:12px 0}}
+/* faq */
+.faq{display:grid;gap:10px}
+.fq{border-radius:16px;background:var(--card);border:1px solid var(--bd);overflow:hidden;transition:border-color .3s}
+.fq.open{border-color:rgba(192,132,252,.6)}
+.fqb{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;border:0;background:none;color:var(--fg);font:600 1rem "Noto Sans Bengali",sans-serif;padding:14px 16px;cursor:pointer}
+.fqb .ic{color:#c4b5fd;transition:transform .3s}
+.fq.open .fqb .ic{transform:rotate(45deg)}
+.fqa{height:0;overflow:hidden}
+.fqa p{margin:0;padding:0 16px 16px;color:var(--mut)}
+.pol h4{margin:14px 0 2px;font-size:.98rem;color:#e9ddff}
+.pol p{margin:0;color:var(--mut);font-size:.92rem}
+
+
+
+.cta{text-align:center;padding:24px;border-radius:22px;background:var(--card);border:1px solid var(--bd)}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+footer{margin-top:44px;padding:20px 0 30px;border-top:1px solid var(--bd);text-align:center;color:var(--mut);font-size:.9rem}
+footer a{color:#d8b4fe;text-decoration:none}
+/* modal */
+.ov{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;justify-content:center;background:rgba(5,2,12,.7);backdrop-filter:blur(6px)}
+.md{width:min(480px,100%);max-height:92vh;overflow-y:auto;background:#150d27;border:1px solid var(--bd);border-radius:22px 22px 0 0;padding:18px}
+@media(min-width:600px){.ov{align-items:center}.md{border-radius:22px}}
+.md h3{margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+.x{background:none;border:0;color:var(--mut);cursor:pointer}
+.md label{display:block;font-size:.84rem;color:var(--mut);margin:10px 0 3px}
+.md input,.md select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.06);color:var(--fg);font:inherit}
+.md select option{color:#000}
+.sum{margin-top:12px;padding:12px;border-radius:14px;background:rgba(124,58,237,.14);border:1px solid rgba(192,132,252,.3);font-size:.94rem}
+.sum div{display:flex;justify-content:space-between}.sum .tot{font-weight:700;font-size:1.1rem;border-top:1px solid var(--bd);margin-top:6px;padding-top:6px}
+.cprow{display:flex;gap:8px}.cprow input{flex:1}
+.note{font-size:.84rem;color:var(--mut);margin:6px 0 0}
+.err{color:#fda4af}.okc{color:#86efac}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 11l16-7v16L3 13z"/><path d="M7 13v5a2 2 0 002 2h1l-1-6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0L2 12V2h10l8.6 8.6a2 2 0 010 2.8z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+<symbol id="i-click" viewBox="0 0 24 24"><path d="M3 3l7 17 2.5-7.5L20 10z"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8z"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-swipe" viewBox="0 0 24 24"><polyline points="8 6 2 12 8 18"/><polyline points="16 6 22 12 16 18"/><line x1="2" y1="12" x2="22" y2="12"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+</defs></svg>
+
+<header><div class="wrap">
+  <div class="logo"><i><svg class="ic"><use href="#i-logo"/></svg></i>RHB Ads</div>
+  <a class="btn sm" href="#pricing">প্যাকেজ দেখুন</a>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="orb o1"></span><span class="orb o2"></span>
+    <h1 class="h-a">আপনার ব্যবসার বিজ্ঞাপন<br><b>সাশ্রয়ী দামে, দ্রুত চালু</b></h1>
+    <p class="h-a">প্যাকেজ বেছে নিন, চেকআউট করুন, আমরা যাচাই করে বিজ্ঞাপন চালু করে দেব।</p>
+    <div class="h-a"><a class="btn" href="#pricing"><svg class="ic"><use href="#i-tag"/></svg>দাম ও প্যাকেজ</a></div>
+    <div class="chips">
+      <span class="chip h-a"><svg class="ic"><use href="#i-zap"/></svg>দ্রুত চালু</span>
+      <span class="chip h-a"><svg class="ic"><use href="#i-tag"/></svg>সাশ্রয়ী দাম</span>
+      <span class="chip h-a"><svg class="ic"><use href="#i-click"/></svg>সরাসরি ক্লিক</span>
+    </div>
+  </section>
+
+  <div class="car rv" id="car" style="display:none"><div class="track" id="track"></div><div class="dots" id="dots"></div></div>
+
+  <h2 class="sec rv" id="pricing">প্যাকেজ ও দাম</h2>
+  <p class="sub rv">ট্যাবে চাপুন বা কার্ড ডানে-বামে সোয়াইপ করুন</p>
+  <div id="pkWrap" class="rv" style="display:none">
+    <div class="tabs" id="tabs"></div>
+    <div class="slider" id="slider"></div>
+    <div class="hint"><svg class="ic" id="hintI"><use href="#i-swipe"/></svg>সোয়াইপ করুন</div>
+  </div>
+  <div class="empty" id="pkEmpty">প্যাকেজ শীঘ্রই যোগ হবে।</div>
+
+  <h2 class="sec rv">কীভাবে কাজ করে</h2>
+  <p class="sub rv">মাত্র তিন ধাপে আপনার বিজ্ঞাপন পৌঁছে যাবে হাজারো মানুষের কাছে</p>
+  <div class="flow" id="flow">
+    <div class="stp">
+      <span class="num">১</span>
+      <svg class="art" viewBox="0 0 120 90" aria-hidden="true">
+        <rect x="16" y="12" width="88" height="56" rx="10" fill="rgba(124,58,237,.25)" stroke="#c4b5fd" stroke-width="1.5"/>
+        <rect x="24" y="20" width="24" height="12" rx="6" fill="#f5c26b"/>
+        <text x="36" y="29" text-anchor="middle" font-size="8" font-weight="700" fill="#2a1700">AD</text>
+        <rect class="a1l" x="24" y="38" width="60" height="5" rx="2.5" fill="#e9ddff" opacity=".8"/>
+        <rect class="a1l" x="24" y="48" width="44" height="5" rx="2.5" fill="#e9ddff" opacity=".5"/>
+        <rect class="a1b" x="72" y="50" width="26" height="12" rx="6" fill="#c026d3"/>
+        <circle class="a1r" cx="85" cy="56" r="4" fill="none" stroke="#f0abfc" stroke-width="2" opacity="0"/>
+        <path class="a1p" d="M82 52v18l5-5 4 9 4-2-4-9h7z" fill="#fff" stroke="#150d27" stroke-width="1" stroke-linejoin="round"/>
+      </svg>
+      <h3>বিজ্ঞাপন দিন</h3>
+      <p>পছন্দের প্যাকেজ বেছে চেকআউট করুন। আপনার লিংক ও পেমেন্টের তথ্য দিলেই কাজ শুরু।</p>
+    </div>
+    <div class="stp">
+      <span class="num">২</span>
+      <svg class="art" viewBox="0 0 120 90" aria-hidden="true">
+        <circle cx="60" cy="45" r="34" fill="none" stroke="rgba(196,181,253,.3)" stroke-dasharray="3 4"/>
+        <g class="orb">
+          <line class="sp" x1="60" y1="45" x2="94" y2="45" stroke="#c4b5fd" stroke-width="1"/>
+          <line class="sp" x1="60" y1="45" x2="77" y2="74.4" stroke="#c4b5fd" stroke-width="1"/>
+          <line class="sp" x1="60" y1="45" x2="43" y2="74.4" stroke="#c4b5fd" stroke-width="1"/>
+          <line class="sp" x1="60" y1="45" x2="26" y2="45" stroke="#c4b5fd" stroke-width="1"/>
+          <line class="sp" x1="60" y1="45" x2="43" y2="15.6" stroke="#c4b5fd" stroke-width="1"/>
+          <line class="sp" x1="60" y1="45" x2="77" y2="15.6" stroke="#c4b5fd" stroke-width="1"/>
+          <circle class="nd" cx="94" cy="45" r="6.5" fill="#7c3aed" stroke="#f0abfc" stroke-width="1.5"/>
+          <circle class="nd" cx="77" cy="74.4" r="6.5" fill="#c026d3" stroke="#f5c26b" stroke-width="1.5"/>
+          <circle class="nd" cx="43" cy="74.4" r="6.5" fill="#7c3aed" stroke="#f0abfc" stroke-width="1.5"/>
+          <circle class="nd" cx="26" cy="45" r="6.5" fill="#c026d3" stroke="#f5c26b" stroke-width="1.5"/>
+          <circle class="nd" cx="43" cy="15.6" r="6.5" fill="#7c3aed" stroke="#f0abfc" stroke-width="1.5"/>
+          <circle class="nd" cx="77" cy="15.6" r="6.5" fill="#c026d3" stroke="#f5c26b" stroke-width="1.5"/>
+        </g>
+        <circle cx="60" cy="45" r="18" fill="#150d27" stroke="#c4b5fd" stroke-width="1.5"/>
+        <text class="ct" x="60" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">৫০+</text>
+      </svg>
+      <h3>৫০+ প্ল্যাটফর্মে প্রচার</h3>
+      <p>ওয়েবসাইট, সফটওয়্যারসহ ৫০টিরও বেশি প্ল্যাটফর্মে আপনার বিজ্ঞাপন দেখানো হবে।</p>
+    </div>
+    <div class="stp">
+      <span class="num">৩</span>
+      <svg class="art" viewBox="0 0 120 90" aria-hidden="true">
+        <line x1="14" y1="74" x2="108" y2="74" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+        <rect class="br" x="22" y="56" width="14" height="18" rx="3" fill="#7c3aed"/>
+        <rect class="br" x="42" y="46" width="14" height="28" rx="3" fill="#9333ea"/>
+        <rect class="br" x="62" y="34" width="14" height="40" rx="3" fill="#c026d3"/>
+        <rect class="br" x="82" y="20" width="14" height="54" rx="3" fill="#f0abfc"/>
+        <polyline class="tr" points="26,50 49,38 69,28 89,12" fill="none" stroke="#f5c26b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="100"/>
+        <circle class="dt" cx="89" cy="12" r="4.5" fill="#f5c26b"/>
+      </svg>
+      <h3>বাড়বে বিক্রি ও গ্রাহক</h3>
+      <p>বেশি মানুষের চোখে পড়লে বাড়ে ক্লিক, যোগাযোগ আর আপনার বিক্রির সুযোগ।</p>
+    </div>
+  </div>
+
+  <h2 class="sec rv" id="faq">সাধারণ প্রশ্ন (FAQ)</h2>
+  <div class="faq rv">
+    <div class="fq"><button class="fqb" type="button" aria-expanded="false"><span>বিজ্ঞাপন কত তাড়াতাড়ি চালু হবে?</span><svg class="ic"><use href="#i-plus"/></svg></button><div class="fqa"><p>অর্ডার ও পেমেন্টের তথ্য যাচাই হলেই আমরা দ্রুত আপনার বিজ্ঞাপন চালু করে দিই।</p></div></div>
+    <div class="fq"><button class="fqb" type="button" aria-expanded="false"><span>বিজ্ঞাপন কোথায় কোথায় দেখানো হবে?</span><svg class="ic"><use href="#i-plus"/></svg></button><div class="fqa"><p>ওয়েবসাইট, সফটওয়্যারসহ ৫০টিরও বেশি প্ল্যাটফর্মে আপনার বিজ্ঞাপন দেখানো হয়।</p></div></div>
+    <div class="fq"><button class="fqb" type="button" aria-expanded="false"><span>কীভাবে পেমেন্ট করব?</span><svg class="ic"><use href="#i-plus"/></svg></button><div class="fqa"><p>প্যাকেজের "কিনুন" বোতামে চাপুন, পেমেন্টের মাধ্যম বেছে দেওয়া নম্বরে টাকা পাঠান, তারপর TrxID লিখে অর্ডার নিশ্চিত করুন।</p></div></div>
+    <div class="fq"><button class="fqb" type="button" aria-expanded="false"><span>কোন ধরনের লিংকের বিজ্ঞাপন দেওয়া যাবে?</span><svg class="ic"><use href="#i-plus"/></svg></button><div class="fqa"><p>আপনার ফেসবুক পেজ, ওয়েবসাইট, ইউটিউব চ্যানেল বা দোকানের লিংক দেওয়া যাবে। তবে অবৈধ, প্রতারণামূলক বা আপত্তিকর কিছুর বিজ্ঞাপন নেওয়া হয় না।</p></div></div>
+    <div class="fq"><button class="fqb" type="button" aria-expanded="false"><span>কুপন কোড কোথায় দেব?</span><svg class="ic"><use href="#i-plus"/></svg></button><div class="fqa"><p>চেকআউটের "কুপন কোড" ঘরে কোডটি লিখে "প্রয়োগ" চাপুন। ছাড় সহ মোট দাম সঙ্গে সঙ্গে দেখাবে।</p></div></div>
+    <div class="fq"><button class="fqb" type="button" aria-expanded="false"><span>বিজ্ঞাপন দিলে কি বিক্রি বাড়বেই?</span><svg class="ic"><use href="#i-plus"/></svg></button><div class="fqa"><p>বিজ্ঞাপন আপনাকে বেশি মানুষের কাছে পৌঁছে দেয়, তাই বিক্রির সুযোগ বাড়ে। তবে নির্দিষ্ট ফলাফলের নিশ্চয়তা দেওয়া যায় না, কারণ তা আপনার পণ্য, দাম ও অফারের ওপরও নির্ভর করে।</p></div></div>
+    <div class="fq"><button class="fqb" type="button" aria-expanded="false"><span>অর্ডার নিয়ে সমস্যা হলে কী করব?</span><svg class="ic"><use href="#i-plus"/></svg></button><div class="fqa"><p>নিচের হোয়াটসঅ্যাপ বা ফেসবুক পেজে সরাসরি জানান, আমরা সাহায্য করব।</p></div></div>
+  </div>
+
+  <h2 class="sec rv">প্রশ্ন আছে?</h2>
+  <div class="cta rv">
+    <div style="color:var(--mut)">আমাদের সাথে সরাসরি কথা বলুন</div>
+    <div class="row">
+      <a class="btn" id="wa" href="#" target="_blank" rel="noopener"><svg class="ic"><use href="#i-chat"/></svg>হোয়াটসঅ্যাপ</a>
+      <a class="btn ghost" id="fb" href="#" target="_blank" rel="noopener">ফেসবুক পেজ</a>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap">© RHB Ads · <a href="#" data-pol="terms">শর্তাবলী</a> · <a href="#" data-pol="privacy">গোপনীয়তা নীতি</a> · <a href="https://rakibulhaque.vercel.app" target="_blank" rel="noopener">Rakibul Haque Bhuiyan</a></div></footer>
+
+<!-- শর্তাবলী / পলিসি -->
+<div class="ov" id="pov"><div class="md" id="pmd">
+  <h3><span id="pTitle"></span><button class="x" id="pX" aria-label="বন্ধ"><svg class="ic"><use href="#i-close"/></svg></button></h3>
+  <div class="pol" id="pBody"></div>
+</div></div>
+
+<!-- চেকআউট -->
+<div class="ov" id="ov"><div class="md" id="md">
+  <h3><span id="ckTitle">চেকআউট</span><button class="x" id="ckX" aria-label="বন্ধ"><svg class="ic"><use href="#i-close"/></svg></button></h3>
+  <div id="ckForm">
+    <label>আপনার নাম</label><input id="ckName" type="text">
+    <label>ফোন / হোয়াটসঅ্যাপ নম্বর</label><input id="ckPhone" type="tel">
+    <label>যে লিংকের বিজ্ঞাপন দেবেন (https://...)</label><input id="ckLink" type="url">
+    <label>কুপন কোড (থাকলে)</label>
+    <div class="cprow"><input id="ckCoupon" type="text"><button class="btn sm ghost" id="ckApply" type="button">প্রয়োগ</button></div>
+    <div class="note" id="ckCpMsg"></div>
+    <div class="sum" id="ckSum"></div>
+    <div id="payBox">
+      <label>পেমেন্টের মাধ্যম</label><select id="ckPay"></select>
+      <div class="note" id="ckPayInfo"></div>
+      <label>Transaction ID (TrxID)</label><input id="ckTrx" type="text">
+    </div>
+    <div class="note err" id="ckErr"></div>
+    <div class="row"><button class="btn" id="ckSubmit" type="button" style="width:100%">অর্ডার নিশ্চিত করুন</button></div>
+  </div>
+  <div id="ckDone" style="display:none;text-align:center">
+    <p class="okc"><b>অর্ডার জমা হয়েছে ✓</b></p>
+    <p class="note">যাচাইয়ের পর আমরা বিজ্ঞাপন চালু করব। চাইলে হোয়াটসঅ্যাপেও জানিয়ে রাখুন।</p>
+    <div class="row"><a class="btn" id="ckWa" href="#" target="_blank" rel="noopener"><svg class="ic"><use href="#i-chat"/></svg>হোয়াটসঅ্যাপে জানান</a></div>
+  </div>
+</div></div>
+
+<script>
+var PID="codemyst-web-templates",KEY="AIzaSyCvyOUQnhbI-k0WyLJOKvr-DlaV4rvl5jo";
+var BASE="https://firestore.googleapis.com/v1/projects/"+PID+"/databases/(default)/documents/";
+var GRAD=[["#7c3aed","#c026d3"],["#4f46e5","#9333ea"],["#be185d","#7c3aed"]];
+var D={contact:{},packages:[],coupons:[],payment:[],slides:[]};
+function $(i){return document.getElementById(i);}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function ic(n){return '<svg class="ic"><use href="#i-'+n+'"/></svg>';}
+function bn(n){return Number(n).toLocaleString("bn-BD");}
+function okUrl(u){return /^https?:\/\//i.test(u||"");}
+function calc(p,cp){var b=+p.price||0,d=0;
+  if(p.discountType==="percent")d=b*(+p.discountValue||0)/100;else if(p.discountType==="fixed")d=+p.discountValue||0;
+  var a=Math.max(0,Math.round(b-d)),c=0;
+  if(cp)c=cp.type==="percent"?a*(+cp.value||0)/100:(+cp.value||0);
+  return {base:b,after:a,coupon:Math.round(c),final:Math.max(0,Math.round(a-c))};}
+function waLink(msg){var n=String((D.contact&&D.contact.whatsapp)||"").replace(/\D/g,"");return "https://wa.me/"+n+"?text="+encodeURIComponent(msg);}
+
+/* ===== ক্যারাসেল (স্লাইড থাকলেই দেখায়) ===== */
+var cur=0,cnt=0,tm=null;
+function go(i){cur=(i+cnt)%cnt;$("track").style.transform="translateX(-"+cur*100+"%)";var d=$("dots").children;for(var k=0;k<d.length;k++)d[k].className=k===cur?"on":"";}
+function renderSlides(){var s=D.slides||[];cnt=s.length;$("car").style.display=cnt?"block":"none";clearInterval(tm);if(!cnt)return;
+  $("track").innerHTML="";$("dots").innerHTML="";
+  s.forEach(function(x,i){var d=el(okUrl(x.link)?"a":"div","slide"),g=GRAD[i%GRAD.length];
+    d.style.backgroundImage=okUrl(x.img)?"url('"+x.img.replace(/'/g,"%27")+"')":"linear-gradient(135deg,"+g[0]+","+g[1]+")";
+    if(okUrl(x.link)){d.href=x.link;d.target="_blank";d.rel="noopener";}$("track").appendChild(d);
+    var o=el("i");o.onclick=function(){go(i);};$("dots").appendChild(o);});
+  go(0);if(cnt>1)tm=setInterval(function(){go(cur+1);},5000);}
+
+/* ===== প্যাকেজ: ট্যাব + সোয়াইপ কার্ড ===== */
+var act=0,raf=0;
+function setActive(i){act=i;var t=$("tabs").querySelectorAll(".tab"),ind=$("tabs").querySelector(".ind");
+  t.forEach(function(b,k){b.classList.toggle("on",k===i);});
+  if(!t[i])return;var v={x:t[i].offsetLeft,width:t[i].offsetWidth};
+  if(window.gsap)gsap.to(ind,Object.assign({duration:.45,ease:"power3.out"},v));else{ind.style.transform="translateX("+v.x+"px)";ind.style.width=v.width+"px";}}
+function goCard(i){var s=$("slider"),c=s.children[i];if(!c)return;
+  s.scrollTo({left:c.offsetLeft-(s.clientWidth-c.offsetWidth)/2,behavior:"smooth"});setActive(i);
+  if(window.gsap)gsap.fromTo(c,{scale:.93},{scale:1,duration:.55,ease:"back.out(2.2)"});}
+function renderPk(){var ps=D.packages||[],tabs=$("tabs"),sl=$("slider");tabs.innerHTML="";sl.innerHTML="";
+  $("pkWrap").style.display=ps.length?"block":"none";$("pkEmpty").style.display=ps.length?"none":"block";if(!ps.length)return;
+  tabs.appendChild(el("span","ind"));
+  ps.forEach(function(p,i){
+    var t=el("button","tab",p.name);t.type="button";t.onclick=function(){goCard(i);};tabs.appendChild(t);
+    var c=calc(p),card=el("div","pc"+(p.badge?" hot":""));
+    if(p.badge)card.appendChild(el("div","bdg",p.badge));
+    card.appendChild(el("h3","",p.name));if(p.desc)card.appendChild(el("p","pd",p.desc));
+    var old=el("div","old");
+    if(c.after<c.base){old.appendChild(el("s","","৳ "+bn(c.base)));
+      var o=el("span","off");o.innerHTML=ic("tag");o.appendChild(document.createTextNode(p.discountType==="percent"?bn(p.discountValue)+"% ছাড়":bn(p.discountValue)+" টাকা ছাড়"));old.appendChild(o);}
+    card.appendChild(old);
+    var n=el("div","now","৳ "+bn(c.after));n.appendChild(el("small","",p.unit?" "+p.unit:""));card.appendChild(n);
+    var ul=el("ul");(p.features||[]).forEach(function(f){var li=el("li");li.innerHTML=ic("check");li.appendChild(el("span","",f));ul.appendChild(li);});card.appendChild(ul);
+    var b=el("button","btn","কিনুন");b.type="button";b.onclick=function(){openCk(i);};card.appendChild(b);sl.appendChild(card);});
+  sl.onscroll=function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(function(){var m=sl.scrollLeft+sl.clientWidth/2,best=0,bd=1e9;
+    for(var k=0;k<sl.children.length;k++){var c=sl.children[k],d=Math.abs(c.offsetLeft+c.offsetWidth/2-m);if(d<bd){bd=d;best=k;}}
+    if(best!==act)setActive(best);});};
+  setTimeout(function(){setActive(0);},50);
+  if(window.gsap){gsap.from(sl.children,{y:30,opacity:0,duration:.7,stagger:.12,ease:"power3.out"});}}
+
+/* ===== চেকআউট ===== */
+var CK={i:0,cp:null};
+function sumRender(){var p=D.packages[CK.i],c=calc(p,CK.cp),h="<div><span>"+p.name+"</span><span>৳ "+bn(c.base)+"</span></div>";
+  if(c.after<c.base)h+="<div><span>ডিসকাউন্ট</span><span>− ৳ "+bn(c.base-c.after)+"</span></div>";
+  if(c.coupon)h+="<div><span>কুপন ("+CK.cp.code+")</span><span>− ৳ "+bn(c.coupon)+"</span></div>";
+  h+="<div class='tot'><span>মোট</span><span>৳ "+bn(c.final)+"</span></div>";$("ckSum").innerHTML=h;}
+function openCk(i){CK={i:i,cp:null};var p=D.packages[i];$("ckTitle").textContent="চেকআউট – "+p.name;
+  $("ckForm").style.display="block";$("ckDone").style.display="none";$("ckErr").textContent="";$("ckCpMsg").textContent="";$("ckCoupon").value="";
+  var pay=D.payment||[],sel=$("ckPay");sel.innerHTML="";$("payBox").style.display=pay.length?"block":"none";
+  pay.forEach(function(x,k){var o=el("option","",x.name);o.value=k;sel.appendChild(o);});payInfo();sumRender();
+  $("ov").style.display="flex";if(window.gsap){gsap.fromTo($("md"),{y:60,opacity:0},{y:0,opacity:1,duration:.45,ease:"power3.out"});}}
+function closeCk(){if(window.gsap){gsap.to($("md"),{y:50,opacity:0,duration:.25,onComplete:function(){$("ov").style.display="none";}});}else $("ov").style.display="none";}
+function payInfo(){var x=(D.payment||[])[$("ckPay").value];$("ckPayInfo").textContent=x?(x.name+": "+x.number+(x.note?" ("+x.note+")":"")+" – এই নম্বরে টাকা পাঠিয়ে নিচে TrxID দিন"):"";}
+$("ckPay").onchange=payInfo;$("ckX").onclick=closeCk;$("ov").onclick=function(e){if(e.target===$("ov"))closeCk();};
+$("ckApply").onclick=function(){var code=$("ckCoupon").value.trim().toLowerCase(),f=null;
+  (D.coupons||[]).forEach(function(c){if(String(c.code).toLowerCase()===code)f=c;});
+  CK.cp=code&&f?f:null;$("ckCpMsg").className="note "+(CK.cp?"okc":"err");
+  $("ckCpMsg").textContent=CK.cp?"কুপন প্রয়োগ হয়েছে ✓":(code?"কুপনটি সঠিক নয়":"");sumRender();};
+function fv(v){return typeof v==="number"?{doubleValue:v}:{stringValue:String(v)};}
+$("ckSubmit").onclick=function(){var p=D.packages[CK.i],c=calc(p,CK.cp),pay=(D.payment||[])[$("ckPay").value];
+  var name=$("ckName").value.trim(),phone=$("ckPhone").value.trim(),link=$("ckLink").value.trim(),trx=$("ckTrx").value.trim();
+  var err="";if(!name)err="নাম দিন";else if(phone.replace(/\D/g,"").length<10)err="সঠিক ফোন নম্বর দিন";
+  else if(!okUrl(link))err="বিজ্ঞাপনের সঠিক লিংক দিন (https://...)";else if(pay&&!trx)err="TrxID দিন";
+  $("ckErr").textContent=err;if(err)return;
+  var o={name:name,phone:phone,adLink:link,package:p.name,basePrice:c.base,finalPrice:c.final,coupon:CK.cp?CK.cp.code:"",payMethod:pay?pay.name:"",trxId:trx,status:"pending"};
+  var f={};Object.keys(o).forEach(function(k){f[k]=fv(o[k]);});f.createdAt={timestampValue:new Date().toISOString()};
+  $("ckSubmit").disabled=true;$("ckSubmit").textContent="জমা হচ্ছে...";
+  fetch(BASE+"rhb_orders?key="+KEY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fields:f})})
+   .then(function(r){if(!r.ok)throw 0;
+     $("ckWa").href=waLink("নতুন অর্ডার\nনাম: "+name+"\nপ্যাকেজ: "+p.name+"\nমোট: ৳"+c.final+"\nTrxID: "+trx+"\nবিজ্ঞাপন লিংক: "+link);
+     $("ckForm").style.display="none";$("ckDone").style.display="block";
+     if(window.gsap)gsap.from($("ckDone"),{scale:.9,opacity:0,duration:.5,ease:"back.out(2)"});})
+   .catch(function(){$("ckErr").textContent="অর্ডার জমা হয়নি, আবার চেষ্টা করুন বা হোয়াটসঅ্যাপে জানান";})
+   .then(function(){$("ckSubmit").disabled=false;$("ckSubmit").textContent="অর্ডার নিশ্চিত করুন";});};
+
+/* ===== "কীভাবে কাজ করে" মোশন গ্রাফিক্স ===== */
+function stepsAnim(){
+  if(!window.gsap)return;
+  if(window.ScrollTrigger)gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray(".stp").forEach(function(card,i){
+    var q=gsap.utils.selector(card),tl=gsap.timeline({paused:true,repeat:-1,repeatDelay:1.2}),extra=null;
+    if(i===0){
+      tl.fromTo(q(".a1l"),{scaleX:0,transformOrigin:"0% 50%"},{scaleX:1,duration:.5,stagger:.15,ease:"power2.out"})
+        .fromTo(q(".a1p"),{x:-34,y:26,opacity:0},{x:0,y:0,opacity:1,duration:.9,ease:"power2.out"},.2)
+        .to(q(".a1b"),{scale:1.12,transformOrigin:"50% 50%",duration:.15,yoyo:true,repeat:1})
+        .fromTo(q(".a1r"),{attr:{r:4},opacity:.9},{attr:{r:18},opacity:0,duration:.7,ease:"power1.out"},"<")
+        .to(q(".a1p"),{opacity:0,duration:.4},"+=.6");
+    }else if(i===1){
+      var o={v:0},t=q(".ct")[0];
+      tl.fromTo(q(".nd"),{scale:0,transformOrigin:"50% 50%"},{scale:1,duration:.5,stagger:.12,ease:"back.out(2.5)"})
+        .fromTo(q(".sp"),{opacity:0},{opacity:.6,duration:.4,stagger:.1},0)
+        .fromTo(o,{v:0},{v:50,duration:1.3,ease:"power2.out",onUpdate:function(){t.textContent=bn(Math.round(o.v))+"+";}},0);
+      extra=gsap.to(q(".orb"),{rotation:360,svgOrigin:"60 45",duration:18,repeat:-1,ease:"none",paused:true});
+    }else{
+      tl.fromTo(q(".br"),{scaleY:0,transformOrigin:"50% 100%"},{scaleY:1,duration:.6,stagger:.15,ease:"back.out(1.6)"})
+        .fromTo(q(".tr"),{strokeDashoffset:100},{strokeDashoffset:0,duration:.9,ease:"power2.out"},.3)
+        .fromTo(q(".dt"),{scale:0,transformOrigin:"50% 50%"},{scale:1,duration:.4,ease:"back.out(3)"},"-=.2");
+    }
+    function start(){tl.play();if(extra)extra.play();}
+    gsap.fromTo(q(".num"),{boxShadow:"0 0 0 0 rgba(192,38,211,.6)"},{boxShadow:"0 0 0 12px rgba(192,38,211,0)",duration:1.4,repeat:-1,ease:"power1.out"});
+    if(window.ScrollTrigger){
+      gsap.from(card,{y:50,opacity:0,scale:.92,duration:.8,delay:i*.12,ease:"power3.out",scrollTrigger:{trigger:card,start:"top 88%",once:true,onEnter:start}});
+    }else start();
+  });
+}
+
+/* ===== FAQ ===== */
+function faqInit(){
+  document.querySelectorAll(".fq").forEach(function(f){
+    var b=f.querySelector(".fqb"),a=f.querySelector(".fqa");
+    b.onclick=function(){var open=f.classList.toggle("open");b.setAttribute("aria-expanded",open);
+      if(window.gsap)gsap.to(a,{height:open?"auto":0,duration:.35,ease:"power2.out"});else a.style.height=open?"auto":"0";};});
+}
+
+/* ===== শর্তাবলী ও গোপনীয়তা নীতি ===== */
+var POL={
+  terms:{t:"শর্তাবলী (Terms)",s:[
+    ["সেবা","RHB Ads নির্ধারিত প্যাকেজ অনুযায়ী আপনার দেওয়া লিংকের বিজ্ঞাপন বিভিন্ন ওয়েবসাইট, সফটওয়্যার ও প্ল্যাটফর্মে দেখানোর ব্যবস্থা করে।"],
+    ["বিজ্ঞাপনের বিষয়বস্তু","অবৈধ, প্রতারণামূলক, অশ্লীল বা অন্যের ক্ষতি করে এমন কিছুর বিজ্ঞাপন নেওয়া হয় না। এমন বিজ্ঞাপন যেকোনো সময় বন্ধ করে দেওয়া যাবে।"],
+    ["পেমেন্ট ও যাচাই","পেমেন্ট ও TrxID যাচাই হওয়ার পরই বিজ্ঞাপন চালু হয়। ভুল বা মিথ্যা তথ্য দিলে অর্ডার বাতিল হতে পারে।"],
+    ["ফলাফল","বিজ্ঞাপন আপনাকে বেশি মানুষের কাছে পৌঁছে দেয়, কিন্তু নির্দিষ্ট ভিউ, ক্লিক বা বিক্রির নিশ্চয়তা দেওয়া হয় না। ফলাফল আপনার পণ্য, দাম ও অফারের ওপর নির্ভর করে।"],
+    ["বাতিল ও ফেরত","বিজ্ঞাপন চালুর আগে বাতিলের অনুরোধ জানালে যাচাই সাপেক্ষে টাকা ফেরত দেওয়া যেতে পারে। বিজ্ঞাপন চালু হয়ে গেলে সাধারণত ফেরত দেওয়া হয় না।"],
+    ["শর্ত পরিবর্তন","প্রয়োজনে এই শর্তাবলী বদলানো হতে পারে। সাইটে সর্বশেষ সংস্করণই কার্যকর থাকবে।"]]},
+  privacy:{t:"গোপনীয়তা নীতি (Privacy Policy)",s:[
+    ["কী তথ্য নেওয়া হয়","অর্ডারের সময় আপনার নাম, ফোন বা হোয়াটসঅ্যাপ নম্বর, বিজ্ঞাপনের লিংক, পেমেন্টের মাধ্যম ও TrxID নেওয়া হয়।"],
+    ["তথ্য কীসে ব্যবহার হয়","শুধু অর্ডার যাচাই, আপনার সঙ্গে যোগাযোগ এবং বিজ্ঞাপন চালু করার কাজে ব্যবহার হয়।"],
+    ["তথ্য কোথায় থাকে","তথ্য Google Firebase-এর নিরাপদ ডেটাবেসে জমা থাকে। আপনার তথ্য কারও কাছে বিক্রি করা হয় না।"],
+    ["যা আমরা কখনো চাই না","আমরা আপনার পাসওয়ার্ড, কার্ড নম্বর বা পিন কখনো চাই না। কেউ চাইলে দিবেন না।"],
+    ["তথ্য সংশোধন ও মুছে ফেলা","আপনার তথ্য সংশোধন বা মুছে ফেলতে চাইলে হোয়াটসঅ্যাপে আমাদের জানান।"]]}
+};
+function polInit(){
+  function close(){if(window.gsap){gsap.to($("pmd"),{y:50,opacity:0,duration:.25,onComplete:function(){$("pov").style.display="none";}});}else $("pov").style.display="none";}
+  document.querySelectorAll("[data-pol]").forEach(function(a){a.onclick=function(e){e.preventDefault();
+    var d=POL[a.getAttribute("data-pol")],b=$("pBody");$("pTitle").textContent=d.t;b.innerHTML="";
+    d.s.forEach(function(x){b.appendChild(el("h4","",x[0]));b.appendChild(el("p","",x[1]));});
+    $("pov").style.display="flex";$("pmd").scrollTop=0;
+    if(window.gsap)gsap.fromTo($("pmd"),{y:60,opacity:0},{y:0,opacity:1,duration:.45,ease:"power3.out"});};});
+  $("pX").onclick=close;$("pov").onclick=function(e){if(e.target===$("pov"))close();};
+}
+
+/* ===== যোগাযোগ + শুরু ===== */
+function renderAll(){var c=D.contact||{};$("wa").href=waLink("আসসালামু আলাইকুম, RHB Ads সম্পর্কে জানতে চাই।");
+  $("fb").href=okUrl(c.facebook)?c.facebook:"#";renderSlides();renderPk();}
+function animate(){if(!window.gsap)return;
+  if(window.ScrollTrigger)gsap.registerPlugin(ScrollTrigger);
+  gsap.from(".h-a",{y:34,opacity:0,duration:.8,stagger:.12,ease:"power3.out"});
+  gsap.to(".o1",{y:30,x:20,duration:4,repeat:-1,yoyo:true,ease:"sine.inOut"});
+  gsap.to(".o2",{y:-26,x:-18,duration:5,repeat:-1,yoyo:true,ease:"sine.inOut"});
+  gsap.to("#hintI",{x:8,duration:.7,repeat:-1,yoyo:true,ease:"power1.inOut"});
+  if(window.ScrollTrigger)gsap.utils.toArray(".rv").forEach(function(e){gsap.from(e,{y:36,opacity:0,duration:.8,ease:"power3.out",scrollTrigger:{trigger:e,start:"top 90%"}});});}
+stepsAnim();faqInit();polInit();animate();renderAll();
+fetch(BASE+"rhb_site/landing?key="+KEY).then(function(r){return r.json();}).then(function(j){
+  if(j&&j.fields&&j.fields.json&&j.fields.json.stringValue){try{D=Object.assign(D,JSON.parse(j.fields.json.stringValue));renderAll();}catch(e){}}}).catch(function(){});
+</script>
+</body>
+</html>

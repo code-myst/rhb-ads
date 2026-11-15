@@ -4,113 +4,351 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RHB Ads – অ্যাডমিন</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f8f3;--fg:#1d2a1f;--muted:#5b6b5e;--card:#fff;--border:#dbe3d6;--accent:#2f6b3a;--danger:#b42318;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#111a13;--fg:#e8f0e6;--muted:#a3b4a6;--card:#1a251c;--border:#2c3b2f;--accent:#6fbf7b;--danger:#f97066;color-scheme:dark}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Noto Sans Bengali",sans-serif;line-height:1.55}
-.wrap{max-width:760px;margin:0 auto;padding:16px}
-h1{font-size:1.3rem;margin:0}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
-label{display:block;font-size:.85rem;color:var(--muted);margin:8px 0 3px}
-input[type=text],input[type=url],textarea{width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;background:transparent;color:inherit;font:inherit}
-button{padding:9px 14px;border:0;border-radius:8px;background:var(--accent);color:#fff;font:inherit;cursor:pointer}
-button.alt{background:transparent;color:var(--accent);border:1px solid var(--accent)}
-button.del{background:transparent;color:var(--danger);border:1px solid var(--danger)}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+:root{--bg:#0d0817;--card:rgba(255,255,255,.055);--bd:rgba(255,255,255,.11);--fg:#f4f0ff;--mut:#b6aad6;--p1:#7c3aed;--p2:#c026d3;--gold:#f5c26b;--ok:#86efac;--bad:#fda4af;--blue:#93c5fd;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--fg);font-family:"Noto Sans Bengali",system-ui,sans-serif;line-height:1.6;background:radial-gradient(900px 500px at 15% -5%,rgba(124,58,237,.35),transparent 60%),radial-gradient(700px 500px at 95% 10%,rgba(192,38,211,.22),transparent 60%),var(--bg);min-height:100vh;overflow-x:hidden}
+.wrap{max-width:820px;margin:0 auto;padding:0 14px 90px}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(13,8,23,.75);border-bottom:1px solid var(--bd)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:10px;padding-bottom:10px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.05rem}
+.logo i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--p1),var(--p2))}
+.logo small{color:var(--mut);font-weight:400}
+/* bottom nav */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;justify-content:center;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:rgba(13,8,23,.92);backdrop-filter:blur(14px);border-top:1px solid var(--bd)}
+nav button{position:relative;flex:1;max-width:240px;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:var(--mut);font:600 .78rem "Noto Sans Bengali",sans-serif;padding:6px 4px;border-radius:12px;cursor:pointer}
+nav button.on{color:#fff;background:linear-gradient(135deg,rgba(124,58,237,.55),rgba(192,38,211,.4))}
+nav .cnt{position:absolute;top:0;right:22%;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--gold);color:#2a1700;font-size:.7rem;font-weight:700;line-height:18px;text-align:center;display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer;text-decoration:none;font:600 .92rem "Noto Sans Bengali",sans-serif;color:#fff;padding:10px 16px;border-radius:12px;background:linear-gradient(135deg,var(--p1),var(--p2));box-shadow:0 6px 18px rgba(124,58,237,.35)}
+.btn.sm{padding:7px 12px;font-size:.84rem;border-radius:10px}
+.btn.ghost{background:var(--card);border:1px solid var(--bd);box-shadow:none}
+.btn.del{background:rgba(253,164,175,.1);border:1px solid rgba(253,164,175,.4);color:var(--bad);box-shadow:none}
+.btn.full{width:100%}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px}
+h2{font-size:1.25rem;margin:18px 0 10px}
+h3{font-size:1rem;margin:20px 0 6px}
+.mut{color:var(--mut);font-size:.86rem}
+label{display:block;font-size:.84rem;color:var(--mut);margin:10px 0 3px}
+input[type=text],input[type=url],input[type=tel],input[type=number],input[type=search],select,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.06);color:var(--fg);font:inherit}
+select option{color:#000}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(192,132,252,.6);outline-offset:0}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--p1);vertical-align:middle;margin-right:6px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tab{display:none}.tab.on{display:block}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{padding:12px 8px;border-radius:14px;background:var(--card);border:1px solid var(--bd);text-align:center}
+.stat b{display:block;font-size:1.3rem;line-height:1.3}
+.stat span{font-size:.78rem;color:var(--mut)}
+/* filters */
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chipb{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--mut);font:600 .82rem "Noto Sans Bengali",sans-serif;padding:6px 13px;border-radius:99px;cursor:pointer;white-space:nowrap}
+.chipb.on{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--p1),var(--p2))}
+/* order card */
+.oc{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:8px;border-radius:16px;background:var(--card);border:1px solid var(--bd);cursor:pointer;transition:transform .15s,border-color .15s}
+.oc:active{transform:scale(.985)}
+.oc.pending{border-left:4px solid var(--gold)}
+.av{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,rgba(124,58,237,.6),rgba(192,38,211,.5));font-weight:700;flex:none}
+.oc .mid{flex:1;min-width:0}
+.oc .mid b,.oc .mid small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.oc .mid small{color:var(--mut);font-size:.8rem}
+.oc .rt{text-align:right;flex:none}
+.oc .rt b{display:block}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 10px;border-radius:99px;border:1px solid currentColor}
+.empty{text-align:center;color:var(--mut);padding:28px;border:1px dashed var(--bd);border-radius:16px}
+/* sheet */
+.ov{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;justify-content:center;background:rgba(5,2,12,.72);backdrop-filter:blur(6px)}
+.md{width:min(560px,100%);max-height:92vh;overflow-y:auto;background:#150d27;border:1px solid var(--bd);border-radius:22px 22px 0 0;padding:16px 16px 22px}
+@media(min-width:600px){.ov{align-items:center}.md{border-radius:22px}}
+.md h3.t{margin:0 0 4px;display:flex;justify-content:space-between;align-items:center;font-size:1.1rem}
+.x{background:none;border:0;color:var(--mut);cursor:pointer;padding:4px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;margin:12px 0;font-size:.92rem}
+.kv dt{color:var(--mut)}.kv dd{margin:0;word-break:break-word}
+.kv a{color:#d8b4fe}
+.sts{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 2px}
+.sts .chipb.on{background:none}
+/* ads */
 .ad{display:flex;gap:10px;align-items:center}
-.ad img,.ad .ph{width:56px;height:56px;border-radius:8px;object-fit:cover;flex:none;background:var(--border);display:flex;align-items:center;justify-content:center}
+.ad img,.ad .ph{width:54px;height:54px;border-radius:12px;object-fit:cover;flex:none;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center}
 .ad .info{flex:1;min-width:0}
 .ad .info b,.ad .info small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.badge{font-size:.72rem;padding:2px 8px;border-radius:99px;border:1px solid var(--border)}
-.on{color:var(--accent);border-color:var(--accent)}
-#msg{color:var(--muted);font-size:.9rem}
+/* site rows */
+details.rw{background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:14px;margin-bottom:8px;padding:0 12px}
+details.rw summary{cursor:pointer;padding:12px 0;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:8px}
+details.rw summary::after{content:"▾";color:var(--mut)}
+details.rw[open] summary::after{content:"▴"}
+details.rw .bd{padding-bottom:12px}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);z-index:90;background:#2a1b4d;border:1px solid var(--bd);padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;font-size:.9rem;max-width:92%}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.warn{font-size:.82rem;color:var(--gold);border:1px solid rgba(245,194,107,.35);background:rgba(245,194,107,.08);border-radius:12px;padding:8px 12px;margin:12px 0}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div id="app">
-    <div class="top"><h1>RHB Ads অ্যাডমিন</h1></div>
-    <div class="card" style="border-color:var(--danger);color:var(--danger);font-size:.88rem">⚠️ এই প্যানেলে লগইন নেই, তাই শুধু শেখা ও পরীক্ষার জন্য। আসল ক্লায়েন্টের সাইটে চালানোর আগে লগইন ফিরিয়ে আনতে হবে।</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 11l16-7v16L3 13z"/><path d="M7 13v5a2 2 0 002 2h1l-1-6"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></symbol>
+<symbol id="i-mega" viewBox="0 0 24 24"><path d="M3 11l16-7v16L3 13z"/><path d="M7 13v5a2 2 0 002 2h1l-1-6"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+</defs></svg>
 
+<header><div class="wrap">
+  <div class="logo"><i><svg class="ic"><use href="#i-logo"/></svg></i>RHB Ads <small>অ্যাডমিন</small></div>
+  <a class="btn sm ghost" href="index.html" target="_blank">সাইট দেখুন</a>
+</div></header>
+
+<div class="wrap">
+  <div class="warn">⚠️ এই প্যানেলে লগইন নেই — ক্লায়েন্টের ফোন নম্বর দেখা যায়। আসল সাইটে চালানোর আগে লগইন যোগ করুন।</div>
+
+  <!-- ===== অর্ডার ===== -->
+  <section class="tab on" id="tab-orders">
+    <h2>অর্ডার তালিকা</h2>
+    <div class="stats">
+      <div class="stat"><b id="stAll">০</b><span>মোট অর্ডার</span></div>
+      <div class="stat"><b id="stPen" style="color:var(--gold)">০</b><span>পেন্ডিং</span></div>
+      <div class="stat"><b id="stRev">৳ ০</b><span>আয় (যাচাইকৃত)</span></div>
+    </div>
+    <input type="search" id="oq" placeholder="নাম, ফোন, TrxID বা প্যাকেজ দিয়ে খুঁজুন...">
+    <div class="chips" id="oChips" style="margin-top:10px"></div>
+    <div id="ordList"></div>
+    <div class="row"><button class="btn ghost" id="oNew" type="button">+ নিজে অর্ডার যোগ করুন</button></div>
+  </section>
+
+  <!-- ===== বিজ্ঞাপন ===== -->
+  <section class="tab" id="tab-ads">
+    <h2>বিজ্ঞাপন</h2>
     <div class="card">
       <b id="formTitle">নতুন বিজ্ঞাপন</b>
       <input type="hidden" id="editId">
       <label>শিরোনাম</label><input type="text" id="fTitle" maxlength="60">
       <label>ছোট বর্ণনা</label><input type="text" id="fDesc" maxlength="90">
       <label>ক্লিক করলে যাবে (লিংক)</label><input type="url" id="fLink" placeholder="https://www.facebook.com/...">
-      <label>ছবির লিংক (Cloudinary বা অন্য, ফাঁকা রাখা যাবে)</label><input type="url" id="fImg" placeholder="https://...">
-      <label><input type="checkbox" id="fActive" checked> চালু</label>
-      <div class="row"><button id="btnSave">সেভ করুন</button><button class="alt" id="btnReset">বাতিল</button></div>
+      <label>ছবির লিংক (ফাঁকা রাখা যাবে)</label><input type="url" id="fImg" placeholder="https://...">
+      <label><input type="checkbox" id="fActive" checked>চালু</label>
+      <div class="row"><button class="btn" id="btnSave" type="button">সেভ করুন</button><button class="btn ghost" id="btnReset" type="button">বাতিল</button></div>
     </div>
-
     <div id="list"></div>
-  </div>
+  </section>
+
+  <!-- ===== সেটিংস ===== -->
+  <section class="tab" id="tab-site">
+    <h2>ল্যান্ডিং পেজ সেটিংস</h2>
+    <p class="mut" style="margin-top:-6px">সেভ করলে index.html-এ নিজে থেকে বদলে যাবে।</p>
+    <div class="card">
+      <label>হোয়াটসঅ্যাপ নম্বর (দেশের কোডসহ, যেমন 8801XXXXXXXXX)</label><input type="text" id="sWa">
+      <label>ফেসবুক পেজের লিংক</label><input type="url" id="sFb">
+    </div>
+    <h3>প্রাইস কার্ড</h3><div id="s_packages"></div><button class="btn ghost sm" data-add="packages" type="button">+ নতুন কার্ড</button>
+    <h3>কুপন কোড</h3><div id="s_coupons"></div><button class="btn ghost sm" data-add="coupons" type="button">+ নতুন কুপন</button>
+    <h3>পেমেন্টের মাধ্যম</h3><div id="s_payment"></div><button class="btn ghost sm" data-add="payment" type="button">+ নতুন মাধ্যম</button>
+    <h3>ক্যারাসেল স্লাইড (ছবি + ক্লিকের লিংক, ঐচ্ছিক)</h3><div id="s_slides"></div><button class="btn ghost sm" data-add="slides" type="button">+ নতুন স্লাইড</button>
+    <div class="row"><button class="btn full" id="saveSite" type="button">ল্যান্ডিং পেজ সেভ করুন</button></div>
+    <div class="mut" id="siteMsg" style="margin-top:8px;text-align:center"></div>
+  </section>
 </div>
+
+<nav>
+  <button class="on" data-tab="orders" type="button"><svg class="ic"><use href="#i-bag"/></svg>অর্ডার<span class="cnt" id="navCnt"></span></button>
+  <button data-tab="ads" type="button"><svg class="ic"><use href="#i-mega"/></svg>বিজ্ঞাপন</button>
+  <button data-tab="site" type="button"><svg class="ic"><use href="#i-gear"/></svg>সেটিংস</button>
+</nav>
+
+<!-- অর্ডার শিট -->
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 var firebaseConfig={apiKey:"AIzaSyCvyOUQnhbI-k0WyLJOKvr-DlaV4rvl5jo",authDomain:"codemyst-web-templates.firebaseapp.com",projectId:"codemyst-web-templates",storageBucket:"codemyst-web-templates.firebasestorage.app",messagingSenderId:"881032790773",appId:"1:881032790773:web:740824c56564624211fbbc"};
-var COL = "rhb_ads";
-
 firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
-var $ = function(id){ return document.getElementById(id); };
-var cache = {};
+var db=firebase.firestore();
+function $(i){return document.getElementById(i);}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function bn(n){return Number(n||0).toLocaleString("bn-BD");}
+function okUrl(u){return /^https?:\/\//i.test(u||"");}
+var tt=0;
+function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("show");},2200);}
 
-function resetForm(){
-  $("editId").value=""; $("fTitle").value=""; $("fDesc").value=""; $("fLink").value=""; $("fImg").value="";
-  $("fActive").checked=true; $("formTitle").textContent="নতুন বিজ্ঞাপন";
-}
-$("btnReset").onclick = resetForm;
+/* ===== ট্যাব ===== */
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){
+  document.querySelectorAll("nav button").forEach(function(x){x.classList.toggle("on",x===b);});
+  document.querySelectorAll(".tab").forEach(function(s){s.classList.toggle("on",s.id==="tab-"+b.getAttribute("data-tab"));});
+  window.scrollTo({top:0});};});
 
-$("btnSave").onclick = function(){
-  var data = { title:$("fTitle").value.trim(), desc:$("fDesc").value.trim(), link:$("fLink").value.trim(),
-               imageUrl:$("fImg").value.trim(), active:$("fActive").checked };
-  if (!data.title || !/^https?:\/\//i.test(data.link)) { alert("শিরোনাম ও সঠিক লিংক (https://...) দিন"); return; }
-  var id = $("editId").value;
-  var p = id ? db.collection(COL).doc(id).update(data)
-             : db.collection(COL).add(Object.assign({createdAt: firebase.firestore.FieldValue.serverTimestamp()}, data));
-  p.then(function(){ resetForm(); load(); }).catch(function(e){ alert("সেভ হয়নি: " + e.message); });
-};
+/* ===== অর্ডার ===== */
+var ST={pending:["পেন্ডিং","#f5c26b"],confirmed:["যাচাই হয়েছে","#93c5fd"],running:["বিজ্ঞাপন চালু","#86efac"],completed:["সম্পন্ন","#c4b5fd"],cancelled:["বাতিল","#fda4af"]};
+var ORD=[],filt="all",cur=null;
+function stOf(o){return ST[o.status]?o.status:"pending";}
+function fdate(o){var d=o.createdAt&&o.createdAt.toDate?o.createdAt.toDate():null;return d?d.toLocaleString("bn-BD",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}):"—";}
+function pill(s){var p=el("span","pill",ST[s][0]);p.style.color=ST[s][1];return p;}
 
+function renderChips(){var h=$("oChips");h.innerHTML="";
+  var list=[["all","সব"]].concat(Object.keys(ST).map(function(k){return [k,ST[k][0]];}));
+  list.forEach(function(x){var n=x[0]==="all"?ORD.length:ORD.filter(function(o){return stOf(o)===x[0];}).length;
+    var b=el("button","chipb"+(filt===x[0]?" on":""),x[1]+" ("+bn(n)+")");b.type="button";
+    b.onclick=function(){filt=x[0];renderOrders();};h.appendChild(b);});}
+
+function renderOrders(){
+  var pen=ORD.filter(function(o){return stOf(o)==="pending";}).length;
+  var rev=ORD.filter(function(o){var s=stOf(o);return s==="confirmed"||s==="running"||s==="completed";}).reduce(function(a,o){return a+(+o.finalPrice||0);},0);
+  $("stAll").textContent=bn(ORD.length);$("stPen").textContent=bn(pen);$("stRev").textContent="৳ "+bn(rev);
+  var nc=$("navCnt");nc.style.display=pen?"block":"none";nc.textContent=bn(pen);
+  renderChips();
+  var q=$("oq").value.trim().toLowerCase(),L=$("ordList");L.innerHTML="";
+  var rows=ORD.filter(function(o){
+    if(filt!=="all"&&stOf(o)!==filt)return false;
+    if(!q)return true;
+    return [o.name,o.phone,o.trxId,o.package,o.adLink].join(" ").toLowerCase().indexOf(q)>-1;});
+  if(!rows.length){L.appendChild(el("div","empty",ORD.length?"কোনো অর্ডার মেলেনি":"এখনও কোনো অর্ডার আসেনি"));return;}
+  rows.forEach(function(o){var s=stOf(o),c=el("div","oc"+(s==="pending"?" pending":""));
+    c.appendChild(el("div","av",(o.name||"?").trim().charAt(0).toUpperCase()));
+    var m=el("div","mid");m.appendChild(el("b","",o.name||"নাম নেই"));
+    m.appendChild(el("small","",(o.package||"—")+" · "+fdate(o)));c.appendChild(m);
+    var r=el("div","rt");r.appendChild(el("b","","৳ "+bn(o.finalPrice)));r.appendChild(pill(s));c.appendChild(r);
+    c.onclick=function(){openOrder(o.id);};L.appendChild(c);});}
+
+db.collection("rhb_orders").orderBy("createdAt","desc").onSnapshot(function(s){
+  ORD=[];s.forEach(function(d){var o=d.data();o.id=d.id;ORD.push(o);});renderOrders();
+  if(cur&&$("ov").style.display==="flex"&&!editing){var o=find(cur);if(o)viewOrder(o);}
+},function(e){$("ordList").innerHTML="";$("ordList").appendChild(el("div","empty","লোড হয়নি: "+e.message));});
+$("oq").oninput=renderOrders;
+function find(id){for(var i=0;i<ORD.length;i++)if(ORD[i].id===id)return ORD[i];return null;}
+
+/* শিট */
+var editing=false;
+function showSheet(){$("ov").style.display="flex";}
+function closeSheet(){$("ov").style.display="none";cur=null;editing=false;}
+$("ov").onclick=function(e){if(e.target===$("ov"))closeSheet();};
+function head(title){var h=el("h3","t");h.appendChild(el("span","",title));
+  var x=el("button","x");x.type="button";x.innerHTML='<svg class="ic"><use href="#i-close"/></svg>';x.onclick=closeSheet;h.appendChild(x);return h;}
+function waNum(p){var d=String(p||"").replace(/\D/g,"");if(/^01\d{9}$/.test(d))d="88"+d;return d;}
+function copy(t){try{navigator.clipboard.writeText(t).then(function(){toast("কপি হয়েছে ✓");});}catch(e){toast("কপি হয়নি");}}
+function setStatus(id,s){db.collection("rhb_orders").doc(id).update({status:s,updatedAt:firebase.firestore.FieldValue.serverTimestamp()})
+  .then(function(){toast("অবস্থা: "+ST[s][0]);}).catch(function(e){toast("হয়নি: "+e.message);});}
+
+function openOrder(id){var o=find(id);if(!o)return;cur=id;editing=false;viewOrder(o);showSheet();}
+function viewOrder(o){var md=$("md");md.innerHTML="";md.appendChild(head("অর্ডার বিস্তারিত"));
+  var s=stOf(o);md.appendChild(el("div","mut","অবস্থা বদলান:"));
+  var sts=el("div","sts");Object.keys(ST).forEach(function(k){var b=el("button","chipb"+(k===s?" on":""),ST[k][0]);b.type="button";
+    if(k===s){b.style.color=ST[k][1];b.style.borderColor=ST[k][1];}
+    b.onclick=function(){setStatus(o.id,k);};sts.appendChild(b);});md.appendChild(sts);
+  var dl=el("dl","kv");
+  function kv(k,v,node){dl.appendChild(el("dt","",k));var d=el("dd");if(node)d.appendChild(node);else d.textContent=(v==null||v==="")?"—":v;dl.appendChild(d);}
+  kv("নাম",o.name);kv("ফোন",o.phone);kv("প্যাকেজ",o.package);
+  kv("আসল দাম","৳ "+bn(o.basePrice));kv("কুপন",o.coupon);
+  var f=el("b","","৳ "+bn(o.finalPrice));kv("মোট দাম",null,f);
+  kv("পেমেন্ট মাধ্যম",o.payMethod);kv("TrxID",o.trxId);
+  if(okUrl(o.adLink)){var a=el("a","",o.adLink);a.href=o.adLink;a.target="_blank";a.rel="noopener";kv("বিজ্ঞাপন লিংক",null,a);}else kv("বিজ্ঞাপন লিংক",o.adLink);
+  kv("অর্ডারের সময়",fdate(o));kv("নোট",o.note);
+  md.appendChild(dl);
+  var r=el("div","row");
+  function ab(t,cls,fn,href){var b=href?el("a","btn sm "+cls,t):el("button","btn sm "+cls,t);if(href){b.href=href;b.target="_blank";b.rel="noopener";}else{b.type="button";b.onclick=fn;}r.appendChild(b);}
+  if(o.phone)ab("📞 কল","ghost",null,"tel:"+o.phone);
+  if(o.phone)ab("💬 হোয়াটসঅ্যাপ","ghost",null,"https://wa.me/"+waNum(o.phone));
+  if(o.trxId)ab("TrxID কপি","ghost",function(){copy(o.trxId);});
+  ab("✏️ সম্পাদনা","",function(){editOrder(o);});
+  ab("মুছুন","del",function(){if(confirm("এই অর্ডার মুছে ফেলবেন?"))db.collection("rhb_orders").doc(o.id).delete().then(function(){closeSheet();toast("মুছে ফেলা হয়েছে");});});
+  md.appendChild(r);}
+
+var OSPEC=[["name","নাম","text"],["phone","ফোন নম্বর","tel"],["package","প্যাকেজ","text"],["basePrice","আসল দাম","number"],["finalPrice","মোট দাম (টাকা)","number"],["coupon","কুপন","text"],["payMethod","পেমেন্ট মাধ্যম","text"],["trxId","TrxID","text"],["adLink","বিজ্ঞাপনের লিংক","url"],["note","অ্যাডমিন নোট","textarea"]];
+function editOrder(o){editing=true;var isNew=!o;o=o||{status:"pending"};var md=$("md");md.innerHTML="";
+  md.appendChild(head(isNew?"নতুন অর্ডার":"অর্ডার সম্পাদনা"));
+  var inp={};
+  OSPEC.forEach(function(f){var l=el("label","",f[1]);md.appendChild(l);var i;
+    if(f[2]==="textarea"){i=el("textarea");i.rows=3;}else{i=el("input");i.type=f[2];if(f[2]==="number")i.step="any";}
+    i.value=o[f[0]]==null?"":o[f[0]];md.appendChild(i);inp[f[0]]=i;});
+  md.appendChild(el("label","","অবস্থা"));
+  var sel=el("select");Object.keys(ST).forEach(function(k){var op=el("option","",ST[k][0]);op.value=k;sel.appendChild(op);});sel.value=stOf(o);md.appendChild(sel);
+  var r=el("div","row");
+  var sv=el("button","btn","সেভ করুন");sv.type="button";
+  sv.onclick=function(){var d={status:sel.value,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+    OSPEC.forEach(function(f){var v=inp[f[0]].value;d[f[0]]=f[2]==="number"?(parseFloat(v)||0):v.trim();});
+    if(!d.name){toast("নাম দিন");return;}
+    if(d.adLink&&!okUrl(d.adLink)){toast("লিংক https:// দিয়ে শুরু হতে হবে");return;}
+    var p;if(isNew){d.createdAt=firebase.firestore.FieldValue.serverTimestamp();p=db.collection("rhb_orders").add(d);}else p=db.collection("rhb_orders").doc(o.id).update(d);
+    sv.disabled=true;p.then(function(){toast("সেভ হয়েছে ✓");editing=false;if(isNew)closeSheet();else{cur=o.id;var n=Object.assign({},o,d);n.createdAt=o.createdAt;viewOrder(n);}})
+     .catch(function(e){sv.disabled=false;toast("সেভ হয়নি: "+e.message);});};
+  var cn=el("button","btn ghost","বাতিল");cn.type="button";cn.onclick=function(){if(isNew)closeSheet();else{editing=false;viewOrder(find(o.id)||o);}};
+  r.appendChild(sv);r.appendChild(cn);md.appendChild(r);}
+$("oNew").onclick=function(){cur=null;editOrder(null);showSheet();};
+
+/* ===== বিজ্ঞাপন ===== */
+var COL="rhb_ads";
+function resetForm(){$("editId").value="";$("fTitle").value="";$("fDesc").value="";$("fLink").value="";$("fImg").value="";$("fActive").checked=true;$("formTitle").textContent="নতুন বিজ্ঞাপন";}
+$("btnReset").onclick=resetForm;
+$("btnSave").onclick=function(){
+  var data={title:$("fTitle").value.trim(),desc:$("fDesc").value.trim(),link:$("fLink").value.trim(),imageUrl:$("fImg").value.trim(),active:$("fActive").checked};
+  if(!data.title||!okUrl(data.link)){toast("শিরোনাম ও সঠিক লিংক (https://...) দিন");return;}
+  var id=$("editId").value;
+  var p=id?db.collection(COL).doc(id).update(data):db.collection(COL).add(Object.assign({createdAt:firebase.firestore.FieldValue.serverTimestamp()},data));
+  p.then(function(){resetForm();load();toast("সেভ হয়েছে ✓");}).catch(function(e){toast("সেভ হয়নি: "+e.message);});};
 function load(){
   db.collection(COL).orderBy("createdAt","desc").get().then(function(snap){
-    var list = $("list"); list.innerHTML = ""; cache = {};
-    if (snap.empty) { list.innerHTML = '<div class="card" style="color:var(--muted)">এখনও কোনো বিজ্ঞাপন নেই।</div>'; return; }
-    snap.forEach(function(d){
-      var a = d.data(); cache[d.id] = a;
-      var c = document.createElement("div"); c.className = "card";
-      var row = document.createElement("div"); row.className = "ad";
-      var im;
-      if (a.imageUrl) { im = document.createElement("img"); im.src = a.imageUrl; im.alt = ""; }
-      else { im = document.createElement("div"); im.className = "ph"; im.textContent = "📣"; }
-      var info = document.createElement("div"); info.className = "info";
-      var b = document.createElement("b"); b.textContent = a.title;
-      var s = document.createElement("small"); s.textContent = a.desc || a.link;
-      var badge = document.createElement("span"); badge.className = "badge" + (a.active ? " on" : ""); badge.textContent = a.active ? "চালু" : "বন্ধ";
-      info.appendChild(b); info.appendChild(s);
-      row.appendChild(im); row.appendChild(info); row.appendChild(badge);
-      var act = document.createElement("div"); act.className = "row";
-      function btn(t, cls, fn){ var x = document.createElement("button"); x.textContent = t; if (cls) x.className = cls; x.onclick = fn; act.appendChild(x); }
-      btn("সম্পাদনা","alt",function(){
-        $("editId").value=d.id; $("fTitle").value=a.title; $("fDesc").value=a.desc||""; $("fLink").value=a.link;
-        $("fImg").value=a.imageUrl||""; $("fActive").checked=!!a.active; $("formTitle").textContent="বিজ্ঞাপন সম্পাদনা";
-        window.scrollTo({top:0,behavior:"smooth"});
-      });
-      btn(a.active ? "বন্ধ করুন" : "চালু করুন","alt",function(){
-        db.collection(COL).doc(d.id).update({active:!a.active}).then(load);
-      });
-      btn("মুছুন","del",function(){
-        if (confirm("মুছে ফেলবেন?")) db.collection(COL).doc(d.id).delete().then(load);
-      });
-      c.appendChild(row); c.appendChild(act); list.appendChild(c);
-    });
-  }).catch(function(e){ $("list").textContent = "লোড হয়নি: " + e.message; });
-}
+    var list=$("list");list.innerHTML="";
+    if(snap.empty){list.appendChild(el("div","empty","এখনও কোনো বিজ্ঞাপন নেই।"));return;}
+    snap.forEach(function(d){var a=d.data();var c=el("div","card"),row=el("div","ad"),im;
+      if(a.imageUrl){im=el("img");im.src=a.imageUrl;im.alt="";}else{im=el("div","ph","📣");}
+      var info=el("div","info");info.appendChild(el("b","",a.title));info.appendChild(el("small","mut",a.desc||a.link));
+      var pl=el("span","pill",a.active?"চালু":"বন্ধ");pl.style.color=a.active?"var(--ok)":"var(--mut)";
+      row.appendChild(im);row.appendChild(info);row.appendChild(pl);
+      var act=el("div","row");
+      function btn(t,cls,fn){var x=el("button","btn sm "+cls,t);x.type="button";x.onclick=fn;act.appendChild(x);}
+      btn("সম্পাদনা","ghost",function(){$("editId").value=d.id;$("fTitle").value=a.title;$("fDesc").value=a.desc||"";$("fLink").value=a.link;$("fImg").value=a.imageUrl||"";$("fActive").checked=!!a.active;$("formTitle").textContent="বিজ্ঞাপন সম্পাদনা";window.scrollTo({top:0,behavior:"smooth"});});
+      btn(a.active?"বন্ধ করুন":"চালু করুন","ghost",function(){db.collection(COL).doc(d.id).update({active:!a.active}).then(load);});
+      btn("মুছুন","del",function(){if(confirm("মুছে ফেলবেন?"))db.collection(COL).doc(d.id).delete().then(load);});
+      c.appendChild(row);c.appendChild(act);list.appendChild(c);});
+  }).catch(function(e){$("list").textContent="লোড হয়নি: "+e.message;});}
 load();
+
+/* ===== ল্যান্ডিং পেজ সেটিংস ===== */
+var SITE_DEFAULT={contact:{whatsapp:"8801XXXXXXXXX",facebook:""},packages:[],coupons:[],payment:[],slides:[]};
+var SPEC={
+  packages:[{k:"name",l:"নাম (ট্যাবে দেখাবে)"},{k:"price",l:"আসল দাম (সংখ্যা)",t:"number"},{k:"unit",l:"একক (যেমন টাকা / মাস)"},{k:"desc",l:"ছোট বর্ণনা"},{k:"badge",l:"ব্যাজ (যেমন জনপ্রিয়, ঐচ্ছিক)"},
+    {k:"discountType",l:"ডিসকাউন্টের ধরন",t:"select",o:[["none","নেই"],["percent","শতাংশ (%)"],["fixed","টাকা"]]},{k:"discountValue",l:"ডিসকাউন্টের পরিমাণ",t:"number"},{k:"features",l:"সুবিধা (প্রতি লাইনে একটা)",t:"lines"}],
+  coupons:[{k:"code",l:"কুপন কোড"},{k:"type",l:"ধরন",t:"select",o:[["percent","শতাংশ (%)"],["fixed","টাকা"]]},{k:"value",l:"পরিমাণ",t:"number"}],
+  payment:[{k:"name",l:"মাধ্যম (যেমন bKash)"},{k:"number",l:"নম্বর"},{k:"note",l:"নির্দেশনা (যেমন Send Money)"}],
+  slides:[{k:"img",l:"ছবির লিংক (https://...)"},{k:"link",l:"ক্লিক করলে যে লিংকে যাবে (https://...)"}]};
+var MUST={packages:"name",coupons:"code",payment:"number",slides:"img"};
+var TITLE={packages:"name",coupons:"code",payment:"name",slides:""};
+var NEWL={packages:"নতুন কার্ড",coupons:"নতুন কুপন",payment:"নতুন মাধ্যম",slides:"নতুন স্লাইড"};
+var ROWS={packages:[],coupons:[],payment:[],slides:[]};
+
+function addRow(key,d,open){d=d||{};
+  var box=el("details","rw");if(open)box.open=true;
+  var sm=el("summary");var st=el("span","",d[TITLE[key]]||(key==="slides"?"স্লাইড "+bn(ROWS.slides.length+1):NEWL[key]));sm.appendChild(st);box.appendChild(sm);
+  var bd=el("div","bd");box.appendChild(bd);var inputs=[];
+  SPEC[key].forEach(function(f){bd.appendChild(el("label","",f.l));var i;
+    if(f.t==="select"){i=el("select");f.o.forEach(function(o){var op=el("option","",o[1]);op.value=o[0];i.appendChild(op);});i.value=d[f.k]||f.o[0][0];}
+    else if(f.t==="lines"){i=el("textarea");i.rows=3;i.value=(d[f.k]||[]).join("\n");}
+    else{i=el("input");i.type=f.t==="number"?"number":"text";i.step="any";i.value=d[f.k]==null?"":d[f.k];}
+    if(f.k===TITLE[key])i.oninput=function(){st.textContent=i.value.trim()||NEWL[key];};
+    bd.appendChild(i);inputs.push({f:f,i:i});});
+  var r={box:box,inputs:inputs};
+  var rm=el("button","btn sm del","এই আইটেম মুছুন");rm.type="button";rm.style.marginTop="12px";
+  rm.onclick=function(){if(!confirm("মুছে ফেলবেন?"))return;box.remove();ROWS[key]=ROWS[key].filter(function(x){return x!==r;});};
+  bd.appendChild(rm);$("s_"+key).appendChild(box);ROWS[key].push(r);}
+function collect(key){return ROWS[key].map(function(r){var o={};
+  r.inputs.forEach(function(x){var v=x.i.value;
+    if(x.f.t==="number")o[x.f.k]=parseFloat(v)||0;
+    else if(x.f.t==="lines")o[x.f.k]=v.split("\n").map(function(t){return t.trim();}).filter(Boolean);
+    else o[x.f.k]=v.trim();});return o;}).filter(function(o){return o[MUST[key]];});}
+function fillSite(d){$("sWa").value=(d.contact&&d.contact.whatsapp)||"";$("sFb").value=(d.contact&&d.contact.facebook)||"";
+  Object.keys(ROWS).forEach(function(k){$("s_"+k).innerHTML="";ROWS[k]=[];(d[k]||[]).forEach(function(x){addRow(k,x);});});}
+function loadSite(){db.collection("rhb_site").doc("landing").get().then(function(doc){var d=SITE_DEFAULT;
+  if(doc.exists&&doc.data().json){try{d=JSON.parse(doc.data().json);}catch(e){}}fillSite(d);}).catch(function(){fillSite(SITE_DEFAULT);});}
+document.querySelectorAll("[data-add]").forEach(function(b){b.onclick=function(){addRow(b.getAttribute("data-add"),null,true);};});
+$("saveSite").onclick=function(){
+  var data={contact:{whatsapp:$("sWa").value.trim(),facebook:$("sFb").value.trim()},packages:collect("packages"),coupons:collect("coupons"),payment:collect("payment"),slides:collect("slides")};
+  $("siteMsg").textContent="সেভ হচ্ছে...";
+  db.collection("rhb_site").doc("landing").set({json:JSON.stringify(data)})
+    .then(function(){$("siteMsg").textContent="✅ সেভ হয়েছে";toast("ল্যান্ডিং পেজ সেভ হয়েছে ✓");})
+    .catch(function(e){$("siteMsg").textContent="সেভ হয়নি: "+e.message;});};
+loadSite();
 </script>
 </body>
 </html>
